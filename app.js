@@ -1,6 +1,6 @@
 const express = require('express')
 const fetch = require('node-fetch')
-require('dotenv').config({ path: process.env.ENF_FILE })
+require('dotenv').config({ path: process.env.ENV_FILE })
 
 const ombi = require('./lib/ombi')
 const themoviedb = require('./lib/themoviedb')
