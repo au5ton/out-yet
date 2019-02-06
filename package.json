@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/au5ton/out-yet#readme",
   "dependencies": {
+    "argparse": "^1.0.10",
+    "chalk": "^2.4.2",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "iso-3166-1": "^1.1.0",
     "node-fetch": "^2.3.0"
   }
 }
