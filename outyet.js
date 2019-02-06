@@ -61,33 +61,31 @@ function isSameDateAs(d, pDate) {
         args.date = new Date()
     }
     
-    let request_ids = [];
-    let request_titles = [];
     print_info("Loading Ombi requests.")
-    let movies = await ombi.getMovies();
+    let requests = await ombi.getMovies();
     print_good("Ombi requests loaded.")
-    for(let elem of movies) {
-        request_ids.push(elem.theMovieDbId)
-        request_titles.push(elem.title)
-    }
-    for(let i = 0; i < movies.length; i++) {
-        print_info(`Loading release info for ${movies[i].title}`)
-        let releases = await themoviedb.getReleaseDates(movies[i].theMovieDbId);
-        print_info(`${movies[i].title} releases loaded.`)
-        let results = releases.results;
-        for(let j = 0; j < results.length; j++) {
-            for(let k = 0; k < results[j].release_dates[k].length; k++) {
-                let a_release = results[j].release_dates[k]
+    // Iterate over Ombi requests
+    for(let i = 0; i < requests.length; i++) {
+        print_info(`Loading release info for ${requests[i].title}`)
+        let results = await themoviedb.getReleaseDates(requests[i].theMovieDbId);
+        let releases = results.results;
+        // Iterate over every country that has a release
+        for(let j = 0; j < releases.length; j++) {
+            // Iterate over every format of release in that country
+            let release_dates = releases[j].release_dates
+            for(let k = 0; k < release_dates.length; k++) {
+                // If the format we desire is present, investigate
                 // See: https://developers.themoviedb.org/3/movies/get-movie-release-dates
-                if(a_release.type === 4 || a_release.type === 5) {
-                    // If this date is older than today
-                    print_info(`${movies[i]} has a release match`)
-                    if(isSameDateAs(args.date, new Date(a_release.release_date))) {
+                if(release_dates[k].type === 4 || release_dates[k].type === 5) {
+                    print_info(`${requests[i].title} has a release candidate.`)
+                    // Check if the release listed in this country was released today (Only cares about day,month,year not time)
+                    if(isSameDateAs(args.date, new Date(release_dates[k].release_date))) {
                         print_good("Telegram message sent!")
                         telegram.sendMessage({
-                            title: movies[i].title,
-                            type: a_release.type,
-                            iso: results[j]['iso_3166_1']
+                            title: requests[i].title,
+                            type: release_dates[k].type,
+                            iso: releases[j]['iso_3166_1'],
+                            date: new Date(release_dates[k].release_date)
                         })
                     }
                 }
