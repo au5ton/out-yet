@@ -1,0 +1,24 @@
+{
+  "name": "out-yet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/au5ton/out-yet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/au5ton/out-yet/issues"
+  },
+  "homepage": "https://github.com/au5ton/out-yet#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0"
+  }
+}
